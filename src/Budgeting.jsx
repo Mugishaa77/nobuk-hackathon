@@ -3,28 +3,26 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLightbulb, faCakeCandles } from '@fortawesome/free-solid-svg-icons';
 
-
 export default function Budgeting() {
     const mockData = {
         'Food and Beverages': [
-            { name: 'Buffet', price: 6000, url: 'https://food1.example.com' },
-            { name: 'Catering Service', price: 7000, url: 'https://food2.example.com' }
+            { name: 'Buffet', price: 6000, url: 'https://cheflink.co.ke' },
+            { name: 'Catering Service', price: 7000, url: 'https://cheflink.co.ke' }
         ],
         'Decorations': [
             { name: 'Basic Decorations', price: 2000, url: 'https://www.carrefour.ke/mafken/en/v4/search?keyword=birthday%20decoration' },
             { name: 'Premium Decorations', price: 3000, url: 'https://decorations2.example.com' }
         ],
         'Entertainment': [
-            { name: 'DJ Service', price: 4000, url: 'https://entertainment1.example.com' },
-            { name: 'Live Band', price: 6000, url: 'https://entertainment2.example.com' }
+            { name: 'DJ Service', price: 4000, url: 'https://janeson.co.ke' },
+            { name: 'Live Band', price: 6000, url: 'https://janeson.co.ke' }
         ],
         'Miscellaneous': [
-            { name: 'Photographer', price: 3000, url: 'https://miscellaneous1.example.com' },
-            { name: 'Party Favors', price: 1500, url: 'https://miscellaneous2.example.com' }
+            { name: 'Photographer', price: 3000, url: 'https://www.instagram.com/urbantakesprd/' },
+            { name: 'Party Favors', price: 1500, url: 'https://www.jumia.co.ke/whiskey-2618/jameson/?srsltid=AfmBOorceqtROpIZPja14eZUVFI4O4DQGHFC1EV1Ro0GqyAuY40gXzFS' }
         ]
     };
 
-    // Function to get the best options within the budget
     const getBestOptions = (budget, categoryData, numPeople) => {
         const allOptions = [];
         for (const [category, options] of Object.entries(categoryData)) {
@@ -62,43 +60,49 @@ export default function Budgeting() {
         return allOptions;
     };
 
-    // Function to summarize and recommend the best options
     const summarizeAndRecommend = (options, budget) => {
         let recommendations = [];
         let totalSpent = 0;
-
+    
         options.forEach(categoryInfo => {
             const { category, options } = categoryInfo;
             if (options.length > 0) {
                 const bestOption = options[0];
                 if (totalSpent + bestOption.price <= budget) {
                     recommendations.push(
-                        `<strong>Category:</strong> ${category}<br />
-                         <strong>Best Option:</strong> ${bestOption.name} at ${bestOption.price} shillings <button onclick="window.open('${bestOption.url}', '_blank')" style="margin-left: 10px;">Visit Page</button><br />`
+                        { type: 'text', content: `Category: ${category}` },
+                        { type: 'text', content: `Best Option: ${bestOption.name} at ${bestOption.price} shillings` },
+                        { type: 'button', content: `Visit Page`, url: bestOption.url }
                     );
                     totalSpent += bestOption.price;
                 } else {
-                    recommendations.push(`<strong>Category:</strong> ${category}<br />
-                                           <strong>Best Option:</strong> Cannot afford within the remaining budget.<br />`);
+                    recommendations.push(
+                        { type: 'text', content: `Category: ${category}` },
+                        { type: 'text', content: `Best Option: Cannot afford within the remaining budget.` }
+                    );
                 }
             } else {
-                recommendations.push(`<strong>Category:</strong> ${category}<br />
-                                       No options available within the budget.<br />`);
+                recommendations.push(
+                    { type: 'text', content: `Category: ${category}` },
+                    { type: 'text', content: `No options available within the budget.` }
+                );
             }
         });
-
+    
         const remainingBudget = budget - totalSpent;
-        const summary = `<strong>Total Budget:</strong> ${budget} shillings<br />
-                         <strong>Total Spent:</strong> ${totalSpent} shillings<br />
-                         <strong>Remaining Budget:</strong> ${remainingBudget} shillings<br />` +
-                         recommendations.join('<br />');
-
+        const summary = [
+            { type: 'text', content: `Total Budget: ${budget} shillings` },
+            { type: 'text', content: `Total Spent: ${totalSpent} shillings` },
+            { type: 'text', content: `Remaining Budget: ${remainingBudget} shillings` },
+            ...recommendations
+        ];
+    
         return summary;
     };
 
     const [amount, setAmount] = useState('');
     const [numPeople, setNumPeople] = useState('');
-    const [summary, setSummary] = useState('');
+    const [summary, setSummary] = useState([]);
 
     const handleGenerateSummary = () => {
         const budget = amount; // You can adjust this if you want to calculate per person
@@ -134,11 +138,25 @@ export default function Budgeting() {
                     />
                 </div>
             </div>
-            <button onClick={handleGenerateSummary}>Generate Budget Summary</button>
-            <div
-                style={{ fontSize: '16px', color: '#333', fontFamily: "Montserrat", lineHeight: '1.5em', textAlign: 'center', padding:'1rem' }}
-                dangerouslySetInnerHTML={{ __html: summary }}
-            />
+            <button onClick={handleGenerateSummary} className="generate">Generate Budget Summary</button>
+            <ul className="summary">
+                {summary.map((item, index) => (
+                    item.type === 'text' ? (
+                        <li key={index} className="summary-text">{item.content}</li>
+                    ) : (
+                        <li key={index} className="summary-button">
+                            <button onClick={() => window.open(item.url, '_blank')}>
+                                {item.content} <sup>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"/>
+  <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z"/>
+</svg>
+                                </sup>
+                            </button>
+                        </li>
+                    )
+                ))}
+            </ul>
         </div>
     );
 }

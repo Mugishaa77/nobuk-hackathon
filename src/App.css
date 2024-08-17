@@ -1,6 +1,6 @@
 .App {
   font-family: "Montserrat", sans-serif;
- 
+ color: #062A30;
 }
 
 h1, h2 {
@@ -12,7 +12,7 @@ h1, h2 {
   margin: 1rem;
   display: block;
   margin: 0 auto;
-  border: 1px solid grey;
+  border: 1px solid lightgray;
   text-align: center;
   padding: 1rem;
   width: 200px;
@@ -45,7 +45,7 @@ h1, h2 {
   border-radius: 2px;
   margin: 2px;
 }
-button {
+.generate {
   background-color: #062A30;
   color: white;
   padding: 0.5rem;
@@ -54,10 +54,36 @@ button {
   margin: 0 auto;
 }
 
-button:hover {
+.generate:hover {
   background-color: #107E39;
   border: 1px solid #107E39;
   
 
 }
 
+.summary {
+  list-style-type: none;
+  margin-left:10rem;
+  line-height: 1.5em;
+
+}
+
+.summary-list {
+
+}
+
+.summary-button button {
+  margin: 0.5rem;
+ margin-left: 5rem;
+ background-color: #062A30;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+
+}
+
+.summary-button button:hover{
+  background-color: #107E39;
+  border: 1px solid #107E39;
+  padding: 2px;
+ }
