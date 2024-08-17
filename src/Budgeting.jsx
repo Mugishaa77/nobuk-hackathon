@@ -11,7 +11,7 @@ export default function Budgeting() {
         ],
         'Decorations': [
             { name: 'Basic Decorations', price: 2000, url: 'https://www.carrefour.ke/mafken/en/v4/search?keyword=birthday%20decoration' },
-            { name: 'Premium Decorations', price: 3000, url: 'https://decorations2.example.com' }
+            { name: 'Premium Decorations', price: 3000, url: 'https://www.jumia.co.ke/mlp-birthday-decoration/?srsltid=AfmBOopg-AxUHDlX9bzhtmqO-SyeqmUxBpl6xDRDyMi8thNfb638tDW5' }
         ],
         'Entertainment': [
             { name: 'DJ Service', price: 4000, url: 'https://janeson.co.ke' },
@@ -70,30 +70,30 @@ export default function Budgeting() {
                 const bestOption = options[0];
                 if (totalSpent + bestOption.price <= budget) {
                     recommendations.push(
-                        { type: 'text', content: `Category: ${category}` },
-                        { type: 'text', content: `Best Option: ${bestOption.name} at ${bestOption.price} shillings` },
+                        { type: 'text', content: `<strong>Category:</strong> ${category}` },
+                        { type: 'text', content: `<strong>Best Option:</strong> ${bestOption.name} at ${bestOption.price} shillings` },
                         { type: 'button', content: `Visit Page`, url: bestOption.url }
                     );
                     totalSpent += bestOption.price;
                 } else {
                     recommendations.push(
-                        { type: 'text', content: `Category: ${category}` },
-                        { type: 'text', content: `Best Option: Cannot afford within the remaining budget.` }
+                        { type: 'text', content: `<strong>Category:</strong> ${category}` },
+                        { type: 'text', content: `<strong>Best Option:</strong> Cannot afford within the remaining budget.` }
                     );
                 }
             } else {
                 recommendations.push(
-                    { type: 'text', content: `Category: ${category}` },
-                    { type: 'text', content: `No options available within the budget.` }
+                    { type: 'text', content: `<strong>Category:</strong> ${category}` },
+                    { type: 'text', content: `<strong>No options available within the budget.</strong>` }
                 );
             }
         });
     
         const remainingBudget = budget - totalSpent;
         const summary = [
-            { type: 'text', content: `Total Budget: ${budget} shillings` },
-            { type: 'text', content: `Total Spent: ${totalSpent} shillings` },
-            { type: 'text', content: `Remaining Budget: ${remainingBudget} shillings` },
+            { type: 'text', content: `<strong>Total Budget:</strong> ${budget} shillings` },
+            { type: 'text', content: `<strong>Total Spent:</strong> ${totalSpent} shillings` },
+            { type: 'text', content: `<strong>Remaining Budget:</strong> ${remainingBudget} shillings` },
             ...recommendations
         ];
     
@@ -142,14 +142,14 @@ export default function Budgeting() {
             <ul className="summary">
                 {summary.map((item, index) => (
                     item.type === 'text' ? (
-                        <li key={index} className="summary-text">{item.content}</li>
+                        <li key={index} className="summary-text" dangerouslySetInnerHTML={{ __html: item.content }}></li>
                     ) : (
                         <li key={index} className="summary-button">
                             <button onClick={() => window.open(item.url, '_blank')}>
                                 {item.content} <sup>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
-  <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"/>
-  <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z"/>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" fill="currentColor" className="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
+  <path fillRule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"/>
+  <path fillRule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z"/>
 </svg>
                                 </sup>
                             </button>
